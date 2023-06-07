@@ -122,21 +122,21 @@ class DatasetCompetitionFormat(Dataset):
                 continue
             download(sourceurl, outfile)
 
-        # private qs url
-        if self.private_qs_url:
-            outfile = os.path.join(self.basedir, self.private_qs_url.split("/")[-1])
-            if os.path.exists(outfile):
-                print("file %s already exists" % outfile)
-            else:
-                download(self.private_qs_url, outfile)
-
-        # private gt url
-        if self.private_gt_url:
-            outfile = os.path.join(self.basedir, self.private_gt_url.split("/")[-1])
-            if os.path.exists(outfile):
-                print("file %s already exists" % outfile)
-            else:
-                download(self.private_gt_url, outfile)
+        # # private qs url
+        # if self.private_qs_url:
+        #     outfile = os.path.join(self.basedir, self.private_qs_url.split("/")[-1])
+        #     if os.path.exists(outfile):
+        #         print("file %s already exists" % outfile)
+        #     else:
+        #         download(self.private_qs_url, outfile)
+        #
+        # # private gt url
+        # if self.private_gt_url:
+        #     outfile = os.path.join(self.basedir, self.private_gt_url.split("/")[-1])
+        #     if os.path.exists(outfile):
+        #         print("file %s already exists" % outfile)
+        #     else:
+        #         download(self.private_gt_url, outfile)
 
         if skip_data:
             return
