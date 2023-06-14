@@ -1,6 +1,6 @@
 FROM tiledb_vs
 
-RUN mamba install -y -c tiledb tiledb-py ansicolors docker-py h5py matplotlib numpy pyyaml psutil scipy scikit-learn jinja2 pandas
+RUN mamba install -y ansicolors docker-py h5py matplotlib numpy pyyaml psutil scipy scikit-learn jinja2 pandas
 
 WORKDIR /home/app
 COPY run_algorithm.py ./
