@@ -4,15 +4,15 @@ import os
 from benchmark.algorithms.base import BaseANN
 from benchmark.datasets import DATASETS
 from tiledb.vector_search.ingestion import ingest, FlatIndex
+import numpy as np
 
 
 class TileDBFlat(BaseANN):
-    def __init__(self, metric, n_list):
-        self._n_list = n_list
+    def __init__(self, metric, arg):
         self._metric = metric
 
     def index_name(self, name):
-        return f"data/tiledb_{name}_{self._n_list}_{self._metric}"
+        return f"data/tiledb_{name}_{self._metric}"
 
     def query(self, X, n):
         if self._metric == 'angular':
@@ -23,25 +23,29 @@ class TileDBFlat(BaseANN):
         return self.res
 
     def fit(self, dataset):
+        if DATASETS[dataset]().dtype == "uint8":
+            source_type = "U8BIN"
+        elif DATASETS[dataset]().dtype == "float32":
+            source_type = "F32BIN"
+
         source_uri = DATASETS[dataset]().get_dataset_fn()
         self.index = ingest(index_type="FLAT",
                        array_uri=self.index_name(dataset),
                        source_uri=source_uri,
-                       source_type="U8BIN")
+                       source_type=source_type)
 
     def load_index(self, dataset):
         if not os.path.exists(self.index_name(dataset)):
             return False
 
-        self.index = FlatIndex(self.index_name(dataset))
+        self.index = FlatIndex(self.index_name(dataset)+"/parts.tdb")
         return True
 
-    def set_query_arguments(self, n_probe):
-        self._n_probe = n_probe
+    def set_query_arguments(self):
+        return
 
     def get_additional(self):
         return {}
 
     def __str__(self):
-        return 'TileDB(n_list=%d, n_probe=%d)' % (self._n_list,
-                                                    self._n_probe)
+        return 'TileDBFlat'

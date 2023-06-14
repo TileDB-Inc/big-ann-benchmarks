@@ -24,8 +24,7 @@ any:
       base-args: ["@metric"]
       run-groups:
         base:
-          args: [[1024,2048,4096,8192]]
-          query-args: [[1, 2, 4, 8, 16, 32, 64, 128, 256]]
+          args: [[-1]]
 random-range-xs:
     kota-t2:
       docker-tag: billion-scale-benchmark-kota
