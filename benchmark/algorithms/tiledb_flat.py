@@ -5,6 +5,7 @@ from benchmark.algorithms.base import BaseANN
 from benchmark.datasets import DATASETS
 from tiledb.vector_search.ingestion import ingest, FlatIndex
 import numpy as np
+import multiprocessing
 
 
 class TileDBFlat(BaseANN):
@@ -17,7 +18,7 @@ class TileDBFlat(BaseANN):
     def query(self, X, n):
         if self._metric == 'angular':
             raise NotImplementedError()
-        self.res =np.transpose(self.index.query(np.transpose(X), k=n))
+        self.res =np.transpose(self.index.query(np.transpose(X), k=n, nthreads=multiprocessing.cpu_count()))
 
     def get_results(self):
         return self.res
@@ -32,7 +33,9 @@ class TileDBFlat(BaseANN):
         self.index = ingest(index_type="FLAT",
                        array_uri=self.index_name(dataset),
                        source_uri=source_uri,
-                       source_type=source_type)
+                       source_type=source_type,
+                       size=DATASETS[dataset]().nb,
+                       workers=multiprocessing.cpu_count())
 
     def load_index(self, dataset):
         if not os.path.exists(self.index_name(dataset)):
