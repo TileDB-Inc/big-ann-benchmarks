@@ -3,17 +3,18 @@ import numpy
 import os
 from benchmark.algorithms.base import BaseANN
 from benchmark.datasets import DATASETS
-from tiledb.vector_search.ingestion import ingest, FlatIndex
+from tiledb.vector_search.ingestion import ingest, IVFFlatIndex
 import numpy as np
 import multiprocessing
 
 
-class TileDBFlat(BaseANN):
-    def __init__(self, metric, arg):
+class TileDBIVFFlat(BaseANN):
+    def __init__(self, metric, n_list):
+        self._n_list = n_list
         self._metric = metric
 
     def index_name(self, name):
-        return f"data/tiledb_{name}_{self._metric}"
+        return f"data/tiledb_{name}_{self._n_list}_{self._metric}"
 
     def query(self, X, n):
         if self._metric == 'angular':
@@ -30,17 +31,19 @@ class TileDBFlat(BaseANN):
             source_type = "F32BIN"
 
         source_uri = DATASETS[dataset]().get_dataset_fn()
-        self.index = ingest(index_type="FLAT",
+        self.index = ingest(index_type="IVF_FLAT",
                        array_uri=self.index_name(dataset),
                        source_uri=source_uri,
                        source_type=source_type,
-                       size=DATASETS[dataset]().nb)
+                       size=DATASETS[dataset]().nb,
+                       training_sample_size=100 * self._n_list,
+                       partitions=self._n_list)
 
     def load_index(self, dataset):
         if not os.path.exists(self.index_name(dataset)):
             return False
 
-        self.index = FlatIndex(self.index_name(dataset))
+        self.index = IVFFlatIndex(self.index_name(dataset))
         return True
 
     def set_query_arguments(self):
@@ -50,4 +53,4 @@ class TileDBFlat(BaseANN):
         return {}
 
     def __str__(self):
-        return 'TileDBFlat'
+        return 'TileDBIVFFlat(n_list=%d)' % self._n_list
