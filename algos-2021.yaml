@@ -25,6 +25,23 @@ any:
       run-groups:
         base:
           args: [[-1]]
+    faiss-flat:
+      docker-tag: billion-scale-benchmark-faissconda
+      module: benchmark.algorithms.faiss_flat
+      constructor: FaissFlat
+      base-args: ["@metric"]
+      run-groups:
+        base:
+          args: [[-1]]
+    tiledb-ivf-flat:
+      docker-tag: billion-scale-benchmark-tiledb
+      module: benchmark.algorithms.tiledb_ivf_flat
+      constructor: TileDBIVFFlat
+      base-args: ["@metric"]
+      run-groups:
+        base:
+          args: [[1024,2048,4096,8192]]
+          query-args: [[1, 2, 4, 8, 16, 32, 64, 128, 256]]
 random-range-xs:
     kota-t2:
       docker-tag: billion-scale-benchmark-kota

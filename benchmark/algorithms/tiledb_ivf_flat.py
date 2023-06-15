@@ -19,7 +19,7 @@ class TileDBIVFFlat(BaseANN):
     def query(self, X, n):
         if self._metric == 'angular':
             raise NotImplementedError()
-        self.res =np.transpose(self.index.query(np.transpose(X), k=n, nthreads=multiprocessing.cpu_count()))
+        self.res =np.transpose(self.index.query(np.transpose(X), k=n, nthreads=multiprocessing.cpu_count(), nprobe=int(self._n_probe)))
 
     def get_results(self):
         return self.res
@@ -46,8 +46,8 @@ class TileDBIVFFlat(BaseANN):
         self.index = IVFFlatIndex(self.index_name(dataset))
         return True
 
-    def set_query_arguments(self):
-        return
+    def set_query_arguments(self, n_probe):
+        self._n_probe = n_probe
 
     def get_additional(self):
         return {}
