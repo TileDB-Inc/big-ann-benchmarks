@@ -3,7 +3,8 @@ import numpy
 import os
 from benchmark.algorithms.base import BaseANN
 from benchmark.datasets import DATASETS
-from tiledb.vector_search.ingestion import ingest, FlatIndex
+from tiledb.vector_search.ingestion import ingest
+from tiledb.vector_search.index import FlatIndex
 import numpy as np
 import multiprocessing
 
@@ -13,7 +14,7 @@ class TileDBFlat(BaseANN):
         self._metric = metric
 
     def index_name(self, name):
-        return f"data/tiledb_{name}_{self._metric}"
+        return f"data/tiledb_flat_{name}_{self._metric}"
 
     def query(self, X, n):
         if self._metric == 'angular':
