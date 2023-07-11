@@ -40,8 +40,204 @@ any:
       base-args: ["@metric"]
       run-groups:
         base:
-          args: [[1024,2048,4096,8192]]
-          query-args: [[1, 2, 4, 8, 16, 32, 64, 128, 256]]
+          args: [[
+            {
+              "n_list": "10000",
+              "mem_budget": "-1",
+            },
+            {
+              "n_list": "10000",
+              "mem_budget": "10000000",
+            },
+            {
+              "n_list": "10000",
+              "mem_budget": "1000000",
+            }
+          ]]
+          query-args: [[
+            {
+              "n_probe": "1",
+              "nuv": "False" 
+            },
+            { 
+              "n_probe": "2",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "4",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "8",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "16",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "32",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "64",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "128",
+              "nuv": "False"
+            },
+            {     
+              "n_probe": "256",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "1",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "2",
+              "nuv": "True"
+            },
+            {     
+              "n_probe": "4",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "8",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "16",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "32",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "64",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "128",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "256",
+              "nuv": "True"
+            },
+          ]]
+    tiledb-ivf-flat-s3:
+      docker-tag: billion-scale-benchmark-tiledb
+      module: benchmark.algorithms.tiledb_ivf_flat
+      constructor: TileDBIVFFlat
+      base-args: ["@metric"]
+      run-groups:
+        base:
+          args: [[
+            {
+              "uri_prefix": "s3://tiledb-nikos/vector-search/bigann/data",
+              "n_list": "10000",
+              "mem_budget": "-1",
+              "config": {
+                "vfs.s3.aws_access_key_id": "",
+                "vfs.s3.aws_secret_access_key": "",
+              }
+            },
+            { 
+              "uri_prefix": "s3://tiledb-nikos/vector-search/bigann/data",
+              "n_list": "10000",
+              "mem_budget": "1000000",
+              "config": {
+                "vfs.s3.aws_access_key_id": "",
+                "vfs.s3.aws_secret_access_key": "",
+              }
+            },
+            { 
+              "uri_prefix": "s3://tiledb-nikos/vector-search/bigann/data",
+              "n_list": "10000",
+              "mem_budget": "10000000",
+              "config": {
+                "vfs.s3.aws_access_key_id": "",
+                "vfs.s3.aws_secret_access_key": "",
+              }
+            }
+          ]]
+          query-args: [[
+            {
+              "n_probe": "1",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "2",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "4",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "8",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "16",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "32",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "64",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "128",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "256",
+              "nuv": "False"
+            },
+            { 
+              "n_probe": "1",
+              "nuv": "True"
+            },
+            { 
+              "n_probe": "2",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "4",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "8",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "16",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "32",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "64",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "128",
+              "nuv": "True"
+            },
+            {
+              "n_probe": "256",
+              "nuv": "True"
+            },
+          ]]
 random-range-xs:
     kota-t2:
       docker-tag: billion-scale-benchmark-kota
