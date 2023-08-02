@@ -1,6 +1,23 @@
-FROM tiledb_vs
+FROM continuumio/miniconda3:4.10.3
 
-RUN mamba install -y ansicolors docker-py h5py matplotlib numpy pyyaml psutil scipy scikit-learn jinja2 pandas
+ARG VERSION=0.0.9
+ARG TILEDB_VERSION=2.16.1
+ARG COMPILER="cxx-compiler c-compiler"
+#ARG COMPILER="clang"
+
+WORKDIR /tmp/
+
+RUN apt-get update && apt-get install -y wget build-essential libarchive-dev
+RUN conda config --prepend channels conda-forge
+
+# Install mamba for faster installations
+RUN conda install mamba
+
+RUN mamba install -y ansicolors docker-py h5py matplotlib numpy pyyaml psutil scipy scikit-learn jinja2 pandas \
+    tiledb tiledb==${TILEDB_VERSION} cmake pybind11 pytest c-compiler cxx-compiler ninja openblas-devel "pip>22"
+
+RUN . ~/.bashrc && pip install --no-cache-dir \
+    "tiledb-vector-search@git+https://github.com/TileDB-Inc/TileDB-Vector-Search@${VERSION}#egg=tiledb-vector-search&subdirectory=apis/python"
 
 WORKDIR /home/app
 COPY run_algorithm.py ./
