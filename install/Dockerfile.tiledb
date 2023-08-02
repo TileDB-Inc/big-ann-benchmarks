@@ -1,7 +1,7 @@
 FROM continuumio/miniconda3:4.10.3
 
-ARG VERSION=0.0.1
-ARG TILEDB_VERSION=2.15.3
+ARG VERSION=0.0.9
+ARG TILEDB_VERSION=2.16.1
 ARG COMPILER="cxx-compiler c-compiler"
 #ARG COMPILER="clang"
 
